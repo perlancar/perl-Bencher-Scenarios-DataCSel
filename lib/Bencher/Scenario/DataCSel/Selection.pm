@@ -44,7 +44,7 @@ _
     participants => [
         {
             module => 'Data::CSel',
-            fcall_template => 'my @res = Data::CSel::csel({class_prefixes=>["Tree::Example::HashNode", "Tree::Example::ArrayNode"]}, <expr>, $main::trees{<tree>}); scalar @res',
+            code_template => 'my @res = Data::CSel::csel({class_prefixes=>["Tree::Example::HashNode", "Tree::Example::ArrayNode"]}, <expr>, $main::trees{<tree>}); scalar @res',
         },
     ],
     datasets => \@datasets,
