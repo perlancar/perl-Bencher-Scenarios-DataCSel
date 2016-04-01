@@ -9,3 +9,6 @@ package Bencher::Scenarios::DataCSel;
 =head1 SEE ALSO
 
 L<Data::CSel>
+
+L<Bencher::Scenarios::MojoDOM> uses roughly equivalent HTML tree datasets so you
+can compare the selection speed of Mojo::DOM vs Data::CSel.
