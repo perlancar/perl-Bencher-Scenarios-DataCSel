@@ -3,39 +3,50 @@ package Bencher::Scenario::DataCSel::Selection;
 # DATE
 # VERSION
 
-use Bencher::ScenarioUtil::DataCSel qw($tree);
+use 5.010001;
+use strict;
+use warnings;
 
-# for easy reference inside code
-$main::tree = $tree;
+use Bencher::ScenarioUtil::DataCSel;
+use PERLANCAR::Tree::Examples qw(gen_sample_tree);
+
+my @exprs = (
+    'Sub4',
+    'Sub4:first-child',
+);
+
+my @datasets = do {
+    my @res = @Bencher::ScenarioUtil::DataCSel::datasets;
+    for (@res) {
+        $_->{args}{'expr@'} = \@exprs;
+    }
+    @res;
+};
 
 our $scenario = {
-    summary => 'Benchmark parsing speed',
+    summary => 'Benchmark selector',
+    description => <<'_',
+
+Sample documents from `PERLANCAR::HTML::Tree::Examples` are used.
+
+_
+    before_gen_items => sub {
+        # prepare trees
+        %main::trees = ();
+        for (@Bencher::ScenarioUtil::DataCSel::datasets) {
+            $_->{name} =~ /(.+)-(.+)/ or die;
+            $main::trees{$_->{name}} = gen_sample_tree(size=>$1, backend=>$2);
+        }
+    },
     participants => [
-        { module => 'Data::CSel', code_template => 'my @res = Data::CSel::csel(<expr>, $main::tree); scalar @res' },
+        {
+            module => 'Data::CSel',
+            fcall_template => 'my @res = Data::CSel::csel({class_prefixes=>["Tree::Example::HashNode", "Tree::Example::ArrayNode"]}, <expr>, $main::trees{<tree>}); scalar @res',
+        },
     ],
-    datasets => [
-        {args => {expr=>'*'}},
-        {args => {expr=>'[id > 20000]'}},
-        {args => {expr=>':has([level = 1])'}},
-        {args => {expr=>':not([level > 1])'}},
-    ],
+    datasets => \@datasets,
+    extra_modules => \@Bencher::ScenarioUtil::DataCSel::extra_modules,
 };
 
 1;
 # ABSTRACT:
-
-=head1 DESCRIPTION
-
-Notes:
-
-=over
-
-=item *
-
-For simple expression (like C<*> or C<T> or just C<[id > 123]>) and a document
-tree of thousands of objects (in this benchmark, we use a tree of height 7 and
-~20k nodes), the bottleneck is collecting descendant nodes. We must perform at
-least 20k calls to _children_as_list(), parent(), child(), _descendants(). And
-pushing the results to the final list.
-
-=back
