@@ -5,6 +5,9 @@ package Bencher::Scenario::DataCSel::Parsing;
 
 our $scenario = {
     summary => 'Benchmark parsing speed',
+    modules => {
+        'Data::CSel' => {version => '0.04'},
+    },
     participants => [
         { fcall_template => 'Data::CSel::parse_csel(<expr>)' },
     ],

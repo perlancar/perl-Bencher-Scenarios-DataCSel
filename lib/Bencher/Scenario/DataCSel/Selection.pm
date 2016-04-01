@@ -38,6 +38,9 @@ _
             $main::trees{$_->{name}} = gen_sample_tree(size=>$1, backend=>$2);
         }
     },
+    modules => {
+        'Data::CSel' => {version=>0.04},
+    },
     participants => [
         {
             module => 'Data::CSel',
