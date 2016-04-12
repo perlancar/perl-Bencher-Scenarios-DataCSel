@@ -8,7 +8,7 @@ use strict;
 use warnings;
 
 use Bencher::ScenarioUtil::DataCSel;
-use PERLANCAR::Tree::Examples qw(gen_sample_tree);
+use PERLANCAR::Tree::Examples qw(gen_sample_data);
 
 my @exprs = (
     'Sub4',
@@ -35,7 +35,7 @@ _
         %main::trees = ();
         for (@Bencher::ScenarioUtil::DataCSel::datasets) {
             $_->{name} =~ /(.+)-(.+)/ or die;
-            $main::trees{$_->{name}} = gen_sample_tree(size=>$1, backend=>$2);
+            $main::trees{$_->{name}} = gen_sample_data(size=>$1, backend=>$2);
         }
     },
     modules => {
