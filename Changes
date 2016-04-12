@@ -1,5 +1,12 @@
 Revision history for Bencher-Scenarios-DataCSel
 
+0.03    2016-04-12 (PERLANCAR)
+
+	- Adjust to PERLANCAR::Tree::Examples 1.0.4+.
+
+	- Fix participant syntax.
+
+
 0.02    2016-04-01 (PERLANCAR)
 
         - Add scenarios: DataCSel::Parsing, DataCSel::Selection.
