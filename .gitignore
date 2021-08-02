@@ -2,3 +2,4 @@ Bencher-Scenarios-DataCSel-*
 .build
 *~
 nytprof*
+.DS_Store
